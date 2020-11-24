@@ -1,10 +1,8 @@
-package com.example.listviewexamples.activities
+package com.example.mailapp
 
 import android.os.Bundle
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
-import com.amulyakhare.textdrawable.TextDrawable
-import com.amulyakhare.textdrawable.util.ColorGenerator
 import com.example.listviewexamples.models.MailModel
 import com.example.mailapp.R
 import com.example.mailapp.adapters.MailAdapter

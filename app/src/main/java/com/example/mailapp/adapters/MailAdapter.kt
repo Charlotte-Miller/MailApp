@@ -1,24 +1,24 @@
 package com.example.mailapp.adapters
 
+import android.app.Activity
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.CheckBox
-import android.widget.ImageView
 import android.widget.TextView
-import com.amulyakhare.textdrawable.TextDrawable
-import com.amulyakhare.textdrawable.util.ColorGenerator
+import android.widget.ToggleButton
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.listviewexamples.models.MailModel
+import com.example.mailapp.R
+import com.google.android.material.button.MaterialButton
 
 
 class MailAdapter(var items: List<MailModel>, var context: Context) :
     BaseAdapter()
 {
-    private var count = 0
-
     override fun getCount(): Int
     {
         return items.size
@@ -34,66 +34,47 @@ class MailAdapter(var items: List<MailModel>, var context: Context) :
         return i.toLong()
     }
 
-    override fun getView(i: Int, view: View, viewGroup: ViewGroup): View
+    override fun getView(i: Int, view: View?, viewGroup: ViewGroup): View
     {
-        val viewHolder: com.example.listviewexamples.adapters.CustomAdapter.ViewHolder
+        var viewHolder = ViewHolder()
+        var convert_view: View?
 
-        if (view == null)
-        {
-            view = LayoutInflater.from(context).inflate(R.layout.layout_item_view, viewGroup, false)
-            Log.v("TAG", "Count: " + count++)
-            viewHolder = com.example.listviewexamples.adapters.CustomAdapter.ViewHolder()
-            viewHolder.imageAvatar = view.findViewById<ImageView>(R.id.image_avatar)
-            viewHolder.textTitle = view.findViewById<TextView>(R.id.text_title)
-            viewHolder.textSubtitle = view.findViewById<TextView>(R.id.text_subtitle)
-            viewHolder.checkSelected = view.findViewById<CheckBox>(R.id.check_selected)
-            view.tag = viewHolder
-        }
-        else viewHolder =
-            view.tag as com.example.listviewexamples.adapters.CustomAdapter.ViewHolder
+        // inflate UI from XML file
+        convert_view =
+            LayoutInflater.from(context).inflate(R.layout.item_listview, viewGroup, false)
 
-        val item: ItemModel = items[i]
 
-        val avatar = avatar_by_1st_letter(i) // radius in px
+        // get all UI view
+        viewHolder.avatar_button = convert_view.findViewById<MaterialButton>(R.id.mail_item_avatar)
+        viewHolder.text_sender = convert_view.findViewById<TextView>(R.id.mail_item_sender)
+        viewHolder.text_topic = convert_view.findViewById<TextView>(R.id.mail_item_topic)
+        viewHolder.text_preview = convert_view.findViewById<TextView>(R.id.mail_item_preview)
+        viewHolder.toggle_checked = convert_view.findViewById<CheckBox>(R.id.button_favorite)
 
-        viewHolder.imageAvatar?.setImageDrawable(avatar)
-        viewHolder.textTitle?.text = item.sender
-        viewHolder.textTopic?.text = item.topic
-        viewHolder.textPreview?.text = item.preview
-        viewHolder.checkSelected?.isChecked = item.is_favorite
+        // set tag for holder
+        convert_view.tag = viewHolder
 
-        viewHolder.checkSelected?.setOnClickListener(View.OnClickListener { view ->
-            item.is_favorite = ((view as CheckBox).isChecked)
-            notifyDataSetChanged()
+        val item: MailModel = items[i]
+
+        viewHolder.avatar_button?.text = item.sender.take(1)
+        viewHolder.text_sender?.text = item.sender
+        viewHolder.text_topic?.text = item.topic
+        viewHolder.text_preview?.text = item.preview
+        viewHolder.toggle_checked?.isChecked = item.is_favorite
+
+        viewHolder.toggle_checked?.setOnClickListener(View.OnClickListener { view ->
+            item.is_favorite = viewHolder.toggle_checked!!.isChecked
         })
 
-        return my_view
-    }
-
-    private fun avatar_by_1st_letter(i: Int): TextDrawable?
-    {
-        val first_letter: String = getItem(i).toString()[0].toString()
-
-        val generator = ColorGenerator.MATERIAL // or use DEFAULT
-
-        // generate random color
-        val color = generator.getColor(getItem(i))
-
-        return TextDrawable.builder()
-            .buildRound(first_letter, color) // radius in px
+        return convert_view
     }
 
     private inner class ViewHolder
     {
-        var imageAvatar: ImageView? = null
-        var textTitle: TextView? = null
-        var textTopic: TextView? = null
-        var textPreview: TextView? = null
-        var checkSelected: CheckBox? = null
-    }
-
-    init
-    {
-        count = 0
+        var text_sender: TextView? = null
+        var avatar_button: MaterialButton? = null
+        var text_topic: TextView? = null
+        var text_preview: TextView? = null
+        var toggle_checked: CheckBox? = null
     }
 }
