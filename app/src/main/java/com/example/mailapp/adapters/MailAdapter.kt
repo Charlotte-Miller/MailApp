@@ -1,16 +1,12 @@
 package com.example.mailapp.adapters
 
-import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.ToggleButton
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.listviewexamples.models.MailModel
 import com.example.mailapp.R
 import com.google.android.material.button.MaterialButton
@@ -49,7 +45,8 @@ class MailAdapter(var items: List<MailModel>, var context: Context) :
         viewHolder.text_sender = convert_view.findViewById<TextView>(R.id.mail_item_sender)
         viewHolder.text_topic = convert_view.findViewById<TextView>(R.id.mail_item_topic)
         viewHolder.text_preview = convert_view.findViewById<TextView>(R.id.mail_item_preview)
-        viewHolder.toggle_checked = convert_view.findViewById<CheckBox>(R.id.button_favorite)
+        viewHolder.toggle_is_favorite =
+            convert_view.findViewById<ToggleButton>(R.id.mail_item_is_favorite)
 
         // set tag for holder
         convert_view.tag = viewHolder
@@ -60,11 +57,11 @@ class MailAdapter(var items: List<MailModel>, var context: Context) :
         viewHolder.text_sender?.text = item.sender
         viewHolder.text_topic?.text = item.topic
         viewHolder.text_preview?.text = item.preview
-        viewHolder.toggle_checked?.isChecked = item.is_favorite
+        viewHolder.toggle_is_favorite?.isChecked = item.is_favorite
 
-        viewHolder.toggle_checked?.setOnClickListener(View.OnClickListener { view ->
-            item.is_favorite = viewHolder.toggle_checked!!.isChecked
-        })
+        viewHolder.toggle_is_favorite?.setOnCheckedChangeListener { _, isChecked ->
+            item.is_favorite = isChecked
+        }
 
         return convert_view
     }
@@ -75,6 +72,6 @@ class MailAdapter(var items: List<MailModel>, var context: Context) :
         var avatar_button: MaterialButton? = null
         var text_topic: TextView? = null
         var text_preview: TextView? = null
-        var toggle_checked: CheckBox? = null
+        var toggle_is_favorite: ToggleButton? = null
     }
 }

@@ -6,6 +6,8 @@
     tools:context=".MainActivity"
     >
 
+    <include layout="@layout/top_app_bar"/>
+
     <ListView
         android:id="@+id/mail_list"
         android:layout_width="match_parent"
