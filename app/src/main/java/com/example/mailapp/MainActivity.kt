@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.listviewexamples.models.MailModel
-import com.example.mailapp.R
 import com.example.mailapp.adapters.MailAdapter
 import com.google.android.material.appbar.MaterialToolbar
 import java.util.*
@@ -19,11 +18,16 @@ class MainActivity : AppCompatActivity()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Set custom app bar
-        val top_app_bar = findViewById<MaterialToolbar>(R.id.top_app_bar)
-        setSupportActionBar(top_app_bar)
+        set_up_custom_actionbar()
 
         generate_adapter_data()
+    }
+
+    private fun set_up_custom_actionbar()
+    {
+        val top_app_bar = findViewById<MaterialToolbar>(R.id.top_app_bar)
+        setSupportActionBar(top_app_bar)
+        top_app_bar.showOverflowMenu()
     }
 
     private fun generate_adapter_data()
